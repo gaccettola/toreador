@@ -1,11 +1,15 @@
 
+import * as dotenv from 'dotenv';
 import * as http  from 'http';
 import * as debug from 'debug';
 import * as chalk from 'chalk';
 
 import App from './App';
 
-debug ( 'ts-express:server' );
+// pull in the .env
+require('dotenv').config();
+
+console.log ( chalk.green ( 'ts-express:server' ) );
 
 const port = normalizePort ( process.env.SERVER_PORT );
 
@@ -61,5 +65,4 @@ function onListening ( ) : void
     let bind = ( typeof addr === 'string' ) ? `pipe ${addr}` : `port ${addr.port}`;
 
     console.log ( chalk.green ( `Listening on ${bind}` ) );
-    debug ( `Listening on ${bind}` );
 }

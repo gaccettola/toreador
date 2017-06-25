@@ -24,8 +24,7 @@ typings/
 .node_repl_history
 *.tgz
 .yarn-integrity
-.env
-
+# .env
 
 .idea/**/workspace.xml
 .idea/**/tasks.xml
@@ -40,5 +39,8 @@ typings/
 .idea/**/gradle.xml
 .idea/**/libraries
 .idea/**/mongoSettings.xml
+.idea/typescript-compiler.xml
 .idea/modules.xml
 .idea/toreador.iml
+
+source/dist/

@@ -1,0 +1,19 @@
+{
+  "name": "toreador",
+  "version": "1.0.0",
+  "description": "node service for processing tasks from bull",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gaccettola/toreador.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gaccettola/toreador/issues"
+  },
+  "homepage": "https://github.com/gaccettola/toreador#readme"
+}

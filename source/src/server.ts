@@ -1,23 +1,23 @@
 
-import * as dotenv from 'dotenv';
-import * as http  from 'http';
-import * as debug from 'debug';
-import * as chalk from 'chalk';
-import * as Queue from 'bull';
+import * as dotenv      from 'dotenv';
+import * as http        from 'http';
+import * as debug       from 'debug';
+import * as chalk       from 'chalk';
+import * as Queue       from 'bull';
 
-import App from './App';
-import { BullRelay } from './bull-relay';
-import { BullAgent } from './bull-agent';
+import { RestApi    }   from './RestApi';
+import { BullRelay  }   from './bull-relay';
+import { BullAgent  }   from './bull-agent';
 
 // pull in the .env
 require('dotenv').config();
 
-console.log ( chalk.green ( 'ts-express:server' ) );
+const port      = normalizePort ( process.env.SERVER_PORT );
 
-const port = normalizePort ( process.env.SERVER_PORT );
+let _bullAgent  = new BullAgent ( );
+let _restApi    = new RestApi ( );
 
-const _bullRelay = new BullRelay();
-const _bullAgent = new BullAgent();
+let App         = _restApi.getexpress ( );
 
 App.set ( 'port', port );
 

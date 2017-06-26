@@ -20,9 +20,9 @@ export class BullAgent
             {
                 redis :
                 {
-                    port        : process.env.REDIS_SERVER_PORT,   // Redis port
-                    host        : process.env.REDIS_SERVER_HOST,   // Redis host
-                    family      : process.env.REDIS_SERVER_FAMILY, // 4 (IPv4) or 6 (IPv6)
+                    port        : process.env.REDIS_SERVER_PORT,
+                    host        : process.env.REDIS_SERVER_HOST,
+                    family      : process.env.REDIS_SERVER_FAMILY,
                     password    : process.env.REDIS_SERVER_AUTH,
                     db          : process.env.REDIS_SERVER_DATA,
                 }
@@ -30,35 +30,38 @@ export class BullAgent
 
         );
 
+        // when a task has been delivered for processing
         this._queue.process ( ( job : any, done ) =>
         {
-            this.ping ( _.random ( 5, 25, true ), done );
+            // into the task processor
+            this.process_task ( _.random ( 5, 25, true ), done );
 
         } );
 
+        // when the process has been processed
         this._queue.on ( 'completed', ( job, result ) =>
         {
-            console.log ( chalk.yellow ( `completed : ${job.data.message}` ) );
+            console.log ( chalk.yellow ( `completed : ${JSON.stringify(job.data)}` ) );
 
         } );
 
     }
 
-    ping = Promise.coroutine ( function* ( val, done )
+    // coroutine wrapped series of promise
+    process_task = Promise.coroutine ( function* (val, done )
     {
-        console.log ( `Ping? ${val} `);
+        yield this.process_step_n ( val );
 
-        yield this.someAsyncTask ( val );
+        yield this.process_step_n ( val );
 
-        yield this.someAsyncTask ( val );
-
-        yield this.someAsyncTask ( val );
+        yield this.process_step_n ( val );
 
         done ( );
 
     } );
 
-    someAsyncTask ( delay )
+    // arbitrary process step for testing
+    process_step_n ( delay )
     {
         return new Promise ( ( resolve ) =>
         {

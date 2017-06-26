@@ -9,16 +9,19 @@ import { BullRelay }    from './bull-relay';
 require('dotenv').config();
 
 // Creates and configures an ExpressJS web server.
-class App
+export class RestApi
 {
     // ref to Express instance
-    public express      : express.Application;
+    private _express    : express.Application;
+
+    // the bull connection for writing
     private _bullRelay  : BullRelay;
 
     //Run configuration methods on the Express instance.
-    constructor ()
+    constructor ( )
     {
-        this.express = express();
+        this._express = express();
+
         this.middleware();
         this.routes();
 
@@ -28,11 +31,11 @@ class App
     // Configure Express middleware.
     private middleware ( ) : void
     {
-        this.express.use ( logger ( 'dev' ) );
+        this._express.use ( logger ( 'dev' ) );
 
-        this.express.use ( bodyParser.json() );
+        this._express.use ( bodyParser.json() );
 
-        this.express.use ( bodyParser.urlencoded ( { extended: false } ) );
+        this._express.use ( bodyParser.urlencoded ( { extended: false } ) );
     }
 
     // Configure API endpoints.
@@ -57,9 +60,12 @@ class App
 
         } );
 
-        this.express.use ( '/', router );
+        this._express.use ( '/', router );
+    }
+
+    getexpress ()
+    {
+        return this._express;
     }
 
 }
-
-export default new App().express;

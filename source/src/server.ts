@@ -3,8 +3,11 @@ import * as dotenv from 'dotenv';
 import * as http  from 'http';
 import * as debug from 'debug';
 import * as chalk from 'chalk';
+import * as Queue from 'bull';
 
 import App from './App';
+import { BullRelay } from './bull-relay';
+import { BullAgent } from './bull-agent';
 
 // pull in the .env
 require('dotenv').config();
@@ -12,6 +15,9 @@ require('dotenv').config();
 console.log ( chalk.green ( 'ts-express:server' ) );
 
 const port = normalizePort ( process.env.SERVER_PORT );
+
+const _bullRelay = new BullRelay();
+const _bullAgent = new BullAgent();
 
 App.set ( 'port', port );
 

@@ -1,26 +1,34 @@
 
+import * as dotenv      from 'dotenv';
 import * as express     from 'express';
 import * as logger      from 'morgan';
 import * as bodyParser  from 'body-parser';
+import { BullRelay }    from './bull-relay';
+
+// pull in the .env
+require('dotenv').config();
 
 // Creates and configures an ExpressJS web server.
 class App
 {
     // ref to Express instance
-    public express: express.Application;
+    public express      : express.Application;
+    private _bullRelay  : BullRelay;
 
     //Run configuration methods on the Express instance.
-    constructor ( )
+    constructor ()
     {
         this.express = express();
         this.middleware();
         this.routes();
+
+        this._bullRelay = new BullRelay ( );
     }
 
     // Configure Express middleware.
     private middleware ( ) : void
     {
-        this.express.use ( logger('dev') );
+        this.express.use ( logger ( 'dev' ) );
 
         this.express.use ( bodyParser.json() );
 
@@ -38,10 +46,14 @@ class App
         // placeholder route handler
         router.get ( '/', ( req, res ) =>
         {
-            res.json (
+            let response_object =
             {
                 message : 'Hello World!'
-            } );
+            };
+
+            res.json ( response_object );
+
+            this._bullRelay.enqueue ( response_object );
 
         } );
 
